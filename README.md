@@ -1,7 +1,8 @@
 ---
-
 This repo is intended to demonstrate an end-to-end MLOps workflow on Databricks, where a model is deployed along with its ancillary pipelines to a specified (currently single) Databricks workspace.
 Each pipeline (e.g model training pipeline, model deployment pipeline) is deployed as a [Databricks job](https://docs.databricks.com/data-engineering/jobs/jobs.html), where these jobs are deployed to a Databricks workspace using Databricks Labs' [`dbx`](https://dbx.readthedocs.io/en/latest/index.html) tool. 
+
+**Please be aware that this repos is using dbx v < 0.76** the API may differ from higher versions. Please consult [this page for migration](https://dbx.readthedocs.io/en/latest/migration/) 
 
 The use case at hand is a churn prediction problem. We use the [IBM Telco Customer Churn dataset](https://community.ibm.com/community/user/businessanalytics/blogs/steven-macko/2019/07/11/telco-customer-churn-1113) to build a simple classifier to predict whether a customer will churn from a fictional telco company.
 
@@ -27,13 +28,13 @@ The following pipelines currently defined within the package are:
 The following outlines the workflow to demo the repo.
 
 ### Set up
-1. Fork https://github.com/niall-turbitt/e2e-mlops
+1. Fork https://github.com/AnastasiaProkaieva/e2e-mlops-dais2022
 1. Configure [Databricks CLI connection profile](https://docs.databricks.com/dev-tools/cli/index.html#connection-profiles)
     - The project is designed to use 3 different Databricks CLI connection profiles: dev, staging and prod. 
-      These profiles are set in [e2e-mlops/.dbx/project.json](https://github.com/niall-turbitt/e2e-mlops/blob/main/.dbx/project.json).
+      These profiles are set in [e2e-mlops/.dbx/project.json](https://github.com/AnastasiaProkaieva/e2e-mlops-dais2022/blob/main/.dbx/project.json).
     - Note that for demo purposes we use the same connection profile for each of the 3 environments. 
       **In practice each profile would correspond to separate dev, staging and prod Databricks workspaces.**
-    - This [project.json](https://github.com/niall-turbitt/e2e-mlops/blob/main/.dbx/project.json) file will have to be 
+    - This [project.json](https://github.com/AnastasiaProkaieva/e2e-mlops-dais2022/blob/main/.dbx/project.json) file will have to be 
       adjusted accordingly to the connection profiles a user has configured on their local machine.
 1. Configure Databricks secrets for GitHub Actions (ensure GitHub actions are enabled for you forked project, as the default is off in a forked repo).
     - Within the GitHub project navigate to Secrets under the project settings
@@ -56,13 +57,13 @@ The following outlines the workflow to demo the repo.
         - The table e2e_mlops_testing.churn_features will be created when the feature-table-creation pipeline is triggered.
     - MLflow experiment
         - MLflow Experiments during model training and model deployment will be used in both the dev and prod environments. 
-          The paths to these experiments are configured in [conf/deployment.yml](https://github.com/niall-turbitt/e2e-mlops/blob/main/conf/deployment.yml).
+          The paths to these experiments are configured in [conf/deployment.yml](https://github.com/AnastasiaProkaieva/e2e-mlops-dais2022/blob/main/conf/deployment.yml).
         - For demo purposes, we delete these experiments if they exist to begin from a blank slate.
     - Model Registry
         - Delete Model in MLflow Model Registry if exists.
     
     **NOTE:** As part of the `initial-model-train-register` multitask job, the first task `demo-setup` will delete these, 
-   as specified in [`demo_setup.yml`](https://github.com/niall-turbitt/e2e-mlops/blob/main/conf/job_configs/demo_setup.yml).
+   as specified in [`demo_setup.yml`](https://github.com/AnastasiaProkaieva/e2e-mlops-dais2022/blob/main/conf/job_configs/demo_setup.yml).
 
 ### Workflow
 
